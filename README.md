@@ -77,7 +77,7 @@ Because the calculator is completely self-contained within a single document, de
 
 ---
 
-## 👤 Author & Contribution
+## 👤 Author
 
 * **Creator:** Andrew Pharazyn
 
