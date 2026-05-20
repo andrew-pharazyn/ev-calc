@@ -987,7 +987,7 @@ function appendPercentageBlur(inputElement) {
                 if (netAnnSavings > 0) {
                     const remainingDist = evCostTimeline[10] - gasCostTimeline[10];
                     const estPayback = 10 + (remainingDist / netAnnSavings);
-                    document.getElementById('chart-title').innerHTML = `In <span class='text-indigo-400 font-mono'>${estPayback.toFixed(1)} years</span>, switching to an EV saves you money.`;
+                    document.getElementById('chart-title').innerHTML = `In<span class='text-indigo-400 font-mono ml-[0.4em]'>${estPayback.toFixed(1)} years</span><span class='text-white mr-[0.4em]'>,</span>switching to an EV saves you money.`;
                 } else {
                     document.getElementById('chart-title').innerHTML = "Switching to an EV <span class='text-rose-400'>never</span> saves you money.";
                 }
