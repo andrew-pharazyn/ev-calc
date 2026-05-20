@@ -345,8 +345,8 @@
                             <span class="text-[10px] font-black text-amber-500 uppercase tracking-wider block">Existing ICE Loan Details</span>
                             <div class="grid grid-cols-2 gap-3 text-xs font-bold">
                                 <div>
-                                    <label class="text-slate-400">ICE Interest Rate (%)</label>
-                                    <input type="number" id="input-iceLoanRate" value="5.5" step="0.1" oninput="updateCalculations()" class="w-full border border-slate-800 bg-slate-900 p-2 mt-1 rounded-xl outline-none font-bold focus:border-indigo-500" />
+                                    <label class="text-slate-400">ICE APR (%)</label>
+                                    <input type="text" id="input-iceLoanRate" value="5.5%" oninput="handlePercentageMask(this)" onfocus="stripPercentageMask(this)" onblur="appendPercentageBlur(this)" class="w-full border border-slate-800 bg-slate-900 p-2 mt-1 rounded-xl outline-none font-bold focus:border-indigo-500" />
                                 </div>
                                 <div>
                                     <label class="text-slate-400">Remaining Term (months)</label>
@@ -371,8 +371,8 @@
                                     <input type="text" id="input-evDownPayment" value="$4,000" oninput="handleCurrencyMask(this)" class="w-full border border-slate-800 bg-slate-900 p-2 mt-1 rounded-xl outline-none font-bold focus:border-indigo-500" />
                                 </div>
                                 <div class="col-span-1">
-                                    <label class="text-slate-400">EV Interest Rate (%)</label>
-                                    <input type="number" id="input-evLoanRate" value="6.5" step="0.1" oninput="updateCalculations()" class="w-full border border-slate-800 bg-slate-900 p-2 mt-1 rounded-xl outline-none font-bold focus:border-indigo-500" />
+                                    <label class="text-slate-400">EV APR (%)</label>
+                                    <input type="text" id="input-evLoanRate" value="6.5%" oninput="handlePercentageMask(this)" onfocus="stripPercentageMask(this)" onblur="appendPercentageBlur(this)" class="w-full border border-slate-800 bg-slate-900 p-2 mt-1 rounded-xl outline-none font-bold focus:border-indigo-500" />
                                 </div>
                                 <div class="col-span-1">
                                     <label class="text-slate-400">Term (months)</label>
@@ -543,6 +543,45 @@
     </footer>
 
     <script>
+// Live text input digit formatter for percentages
+function handlePercentageMask(inputElement) {
+    let cursorPosition = inputElement.selectionStart;
+    let originalLength = inputElement.value.length;
+    
+    // Allow only numbers and a single decimal point
+    let cleanValue = inputElement.value.replace(/[^0-9.]/g, "");
+    
+    // Prevent multiple decimals (e.g., 5.5.5 -> 5.55)
+    let parts = cleanValue.split('.');
+    if (parts.length > 2) {
+        cleanValue = parts[0] + '.' + parts.slice(1).join('');
+    }
+    
+    inputElement.value = cleanValue;
+    
+    // Maintain caret position smoothly
+    let newLength = inputElement.value.length;
+    cursorPosition = cursorPosition + (newLength - originalLength);
+    inputElement.setSelectionRange(cursorPosition, cursorPosition);
+    
+    updateCalculations();
+}
+
+// Strips the % symbol on focus so the user can easily type
+function stripPercentageMask(inputElement) {
+    inputElement.value = inputElement.value.replace('%', '');
+}
+
+// Appends the % symbol and forces 1 decimal place on blur if valid
+function appendPercentageBlur(inputElement) {
+    let num = parseFloat(inputElement.value);
+    if (!isNaN(num)) {
+        inputElement.value = num.toFixed(1) + '%';
+    } else {
+        inputElement.value = '0.0%';
+    }
+    updateCalculations();
+}
         // Tab switching utility
         function switchTab(tabId) {
             ['driving', 'gas', 'ev'].forEach(id => {
@@ -643,10 +682,10 @@
 
             // Financing options
             const enableFinancing = document.getElementById('input-enableFinancing').checked;
-            const iceLoanRate = parseFloat(document.getElementById('input-iceLoanRate').value) || 0;
+            const iceLoanRate = getNumericValue('input-iceLoanRate');
             const iceLoanTerm = parseInt(document.getElementById('input-iceLoanTerm').value) || 0;
             const evDownPayment = getNumericValue('input-evDownPayment');
-            const evLoanRate = parseFloat(document.getElementById('input-evLoanRate').value) || 0;
+            const evLoanRate = getNumericValue('input-evLoanRate');
             const evLoanTerm = parseInt(document.getElementById('input-evLoanTerm').value) || 0;
 
             // Gray out ICE loan inputs if ICE loan is 0
@@ -955,7 +994,7 @@
             } else if (paybackYears === 0) {
                 document.getElementById('chart-title').innerHTML = "Switching to an EV <span class='text-emerald-400'>immediately</span> saves you money.";
             } else {
-                document.getElementById('chart-title').innerHTML = `In&puncsp;<span class='text-emerald-400 font-mono'>${paybackYears.toFixed(1)} years</span>,&puncsp;switching to an EV saves you money.`;
+                document.getElementById('chart-title').innerHTML = `In&#x2008;<span class='text-emerald-400 font-mono'>${paybackYears.toFixed(1)} years</span>,&#x2008;switching to an EV saves you money.`;
             }
 
             // Set 10-Year Financial Impact Card
