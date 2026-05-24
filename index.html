@@ -295,7 +295,7 @@
                 <div class="pt-4 mt-2 border-t border-slate-800/60">
                     <label class="flex items-center gap-2.5 cursor-pointer text-xs font-extrabold text-slate-300">
                         <input type="checkbox" id="input-enableDepreciation" onchange="toggleDepreciationPanel()" class="rounded text-emerald-500 w-4 h-4 bg-slate-900 border-slate-800 focus:ring-0 cursor-pointer accent-emerald-500" />
-                        <span>Factor in vehicle equity & depreciation costs</span>
+                        <span>Factor in vehicle equity & depreciation costs (recommended)</span>
                     </label>
 
                     <div id="panel-depreciation" class="mt-4 p-4 bg-slate-950/50 border border-slate-800/80 rounded-xl space-y-4 hidden">
@@ -324,7 +324,7 @@
                         </div>
                         <div class="p-3 bg-indigo-950/20 border border-indigo-900/30 rounded-xl text-[11px] text-slate-400 leading-relaxed">
                             <span class="font-black text-indigo-400 block mb-1">📊 About Net Wealth (Depreciation) Mode:</span>
-                            When active, the simulator evaluates the vehicles as assets. Instead of treating the purchase price as an instant cash loss, Day 1 begins at the relative net transaction cost (e.g. charger installation fee). Yearly costs then accumulate the actual depreciation (lost resale value) of both cars over 10 years, representing the net impact on your wealth.
+                            When active, the simulator evaluates the vehicles as assets. Instead of treating the purchase price as an instant cash loss, Day 1 begins at the relative net transaction cost (which is $0 minus charger installation costs). Yearly costs then accumulate the actual depreciation (lost resale value) of both cars over 10 years, representing the net impact on your wealth. The assumption does not hold true for the purchase of brand new vehicles, which instantly depreciate upon purchase.
                         </div>
                     </div>
                 </div>
